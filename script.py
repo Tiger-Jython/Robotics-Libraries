@@ -75,7 +75,7 @@ def minify_file(file_path, output_path):
 def minify_directory(src_folder, dst_folder):
     for root, _, files in os.walk(src_folder):
         for file in files:
-            if file.endswith('.py'):
+            if file.endswith('.py') and file != 'script.py':
                 file_path = os.path.join(root, file)
 
                 relative_path = os.path.relpath(file_path, src_folder)
@@ -84,6 +84,8 @@ def minify_directory(src_folder, dst_folder):
                 os.makedirs(os.path.dirname(minified_file_path), exist_ok=True)
 
                 minify_file(file_path, minified_file_path)
+        # disable recursive minification
+        break
 
     print(f"Minification complete. Minified files are in '{dst_folder}'.")
 
