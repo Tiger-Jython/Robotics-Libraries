@@ -2,6 +2,7 @@ import os
 import ast
 import re
 import python_minifier
+import json
 
 
 def getPath(path):
@@ -91,3 +92,23 @@ def minify_directory(src_folder, dst_folder):
 
 
 minify_directory(".", "./min")
+
+
+def create_json():
+    dict = {}
+    for root, _, files in os.walk("./min"):
+        print(files)
+        for file in files:
+            if file.endswith('.py'):
+                with open("min/" + file, 'r') as file:
+                    content = file.read()
+                    name = file.name.split('.')[0].split('/')[-1]
+                    dict[name] = content
+
+        # disable recursive minification
+        break
+    # Convert and write JSON object to file
+    with open("libraries.json", "w") as outfile: 
+        json.dump(dict, outfile, indent=4)
+
+create_json()
