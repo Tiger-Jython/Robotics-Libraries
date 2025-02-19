@@ -91,24 +91,27 @@ def minify_directory(src_folder, dst_folder):
     print(f"Minification complete. Minified files are in '{dst_folder}'.")
 
 
-minify_directory(".", "./min")
 
 
-def create_json():
+def create_json(src_folder):
     dict = {}
-    for root, _, files in os.walk("./min"):
+    for root, _, files in os.walk(src_folder + "/min"):
         print(files)
         for file in files:
             if file.endswith('.py'):
-                with open("min/" + file, 'r') as file:
+                with open(os.path.join(root,file), 'r') as file:
                     content = file.read()
-                    name = file.name.split('.')[0].split('/')[-1]
+                    name = os.path.basename(file.name)
                     dict[name] = content
 
         # disable recursive minification
         break
     # Convert and write JSON object to file
-    with open("libraries.json", "w") as outfile: 
+    with open(os.path.join(src_folder, "libraries.json"), "w") as outfile: 
         json.dump(dict, outfile, indent=4)
 
-create_json()
+
+for item in os.listdir(os.getcwd()):
+    if os.path.isdir(item):        
+        minify_directory(item, item + "/min")
+        create_json(item)
