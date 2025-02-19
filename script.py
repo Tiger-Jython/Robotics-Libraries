@@ -5,12 +5,6 @@ import python_minifier
 import json
 
 
-def getPath(path):
-    with open(f"./{path}", "r") as file:
-        content = file.read()
-    return content
-
-
 def getGlobalVariablesAndFunctions(content):
     astParsed = ast.parse(content)
     globalVariables = []
@@ -95,8 +89,7 @@ def minify_directory(src_folder, dst_folder):
 
 def create_json(src_folder):
     dict = {}
-    for root, _, files in os.walk(src_folder + "/min"):
-        print(files)
+    for root, _, files in os.walk(os.path.join(src_folder,"min")):
         for file in files:
             if file.endswith('.py'):
                 with open(os.path.join(root,file), 'r') as file:
@@ -107,11 +100,13 @@ def create_json(src_folder):
         # disable recursive minification
         break
     # Convert and write JSON object to file
-    with open(os.path.join(src_folder, "libraries.json"), "w") as outfile: 
+    outpath = os.path.join(src_folder, "libraries.json")
+    with open(outpath, "w") as outfile: 
         json.dump(dict, outfile, indent=4)
+    print(f"JSON file containing all libraries created in '{outpath}'.")
 
 
 for item in os.listdir(os.getcwd()):
     if os.path.isdir(item):        
-        minify_directory(item, item + "/min")
+        minify_directory(item, os.path.join(item, "min"))
         create_json(item)
