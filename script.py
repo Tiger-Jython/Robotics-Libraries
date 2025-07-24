@@ -94,7 +94,7 @@ def create_json(src_folder):
             if file.endswith('.py'):
                 with open(os.path.join(root,file), 'r') as file:
                     content = file.read()
-                    name = os.path.basename(file.name)
+                    name = os.path.splitext(os.path.basename(file.name))[0]
                     dict[name] = content
 
         # disable recursive minification
