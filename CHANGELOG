@@ -1,0 +1,29 @@
+1.0.0
+
+Microbit Libraries
+
+- controller.py
+- huskylens.py
+- mbalarm.py
+- mbbitbot.py
+- mbglow.py
+- mbled.py
+- mbmarsrover.py
+- mbminibit.py
+- mbrobot.py
+- mbrobot_plus.py
+- mbrobot_plusV2.py
+- mbrobotmot.py
+- mbthetabot.py
+- mbwait.py
+- mbxgo.py
+
+Calliope Libraries
+
+- callibot.py
+- callibotmot.py
+- cbalarm.py
+- cpglow.py
+- cpmike.py
+- cprover.py
+- cputils.py
