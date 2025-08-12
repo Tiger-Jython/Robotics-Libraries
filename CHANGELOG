@@ -1,6 +1,11 @@
+1.1.0
+
+- Add README.md to the micro:bit / calliope libraries
+- Add callimk.py to calliope
+
 1.0.0
 
-Microbit Libraries
+micro:bit Libraries
 
 - controller.py
 - huskylens.py
