@@ -21,6 +21,8 @@ The following libraries are for the following devices
 
 [Maqueen](https://www.dfrobot.com/product-1783.html?srsltid=AfmBOopLGUwJ_NL86IqewtolHGYyQjTi0immPwFwurcin7pyBopcC2Af)
 - mbrobot.py
+    - mbrobot_legacy.py (for micro:bit v1.x)
+- mbrobotmot.py
 
 [Maqueen plus](https://wiki.dfrobot.com/SKU_MBT0021-EN_Maqueen_Plus_STEAM_Programming_Educational_Robot)
 - mbrobot_plus.py
