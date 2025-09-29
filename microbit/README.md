@@ -41,7 +41,7 @@ The following libraries are for the following devices
 
 [Maqueen plus V3](https://wiki.dfrobot.com/SKU_MBT0050_Maqueen_Plus_V3)
 
-- mbrobot_plusV2.py
+- mbrobot_plusV3.py
 
 [xGo](https://wiki.elecfreaks.com/en/microbit/robot/xgo-robot-kit/) - Experimental
 
