@@ -11,7 +11,6 @@ _powerByteL = 50
 _powerByteR = 50
 _arcScaling = 0
 _UNCONNECTEDERRORMSG = "Please connect to Maqueen robot and switch it on."
-_ledState = bytearray(b'\x0B\0\0')
 _underglowNP = neopixel.NeoPixel(pin1, 4)
 _alarmSequence = ['c5:1', 'r', 'c5,1', 'r:3']
 _buff1 = bytearray(1)
@@ -201,21 +200,11 @@ def pidControlDistance(dir, distance, interruption):
     speed = 2
     if distance >= 6000:
         distance = 60000
-    buff[0] = 64 
-    buff[1] = dir
-    i2c.write(0x10, buff)
-    buff[0] = 85
-    buff[1] = speed
-    i2c.write(0x10, buff)
-    buff[0] = 65
-    buff[1] = distance >> 8
-    i2c.write(0x10, buff)
-    buff[0] = 66
-    buff[1] = distance
-    i2c.write(0x10, buff)
-    buff[0] = 60
-    buff[1] = 0x04 | 0x02
-    i2c.write(0x10, buff)
+    _wr2(64, dir)
+    _wr2(85, speed)
+    _wr2(65, distance >> 8)
+    _wr2(66, distance)
+    _wr2(60, 0x04 | 0x02)
     if (interruption == 1):
         _wr1(0x57)
         flagBuffer = i2c.read(0x10, 1)
@@ -235,8 +224,7 @@ def pidControlAngle(angle, interruption):
     _wr2(68, angle)
     _wr2(60, 0x04 | 0x02)
     if interruption == 1:
-        i2c.write(0x10, b'\x57')
-        buff = bytearray(1)
+        _wr1(0x57)
         buff = i2c.read(0x10, 1)
         while buff[0] == 1:
             sleep(10)
@@ -411,4 +399,3 @@ irLeft = irL1
 irL2 = IRSensor(4)
 motL = Motor(0)
 motR = Motor(2)
-stop()
