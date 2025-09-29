@@ -313,7 +313,7 @@ def getDistanceAt(x_pos, y_pos):
         distance = (data[0] | (data[1] << 8)) // 10
         return distance
     else:
-        return 1023 # fail distance at 1023cm = 10m, TODO discuss desired value
+        return 1023
 
 def getDistanceList():
     _sendLidarCommand(0x2)
@@ -364,29 +364,6 @@ def getDistanceColumn(index):
             col.append(distance // 10)
         return col
     return []
-
-# TODO: Remove the following trash algorithms and do it youreself with raw sensor data!
-
-def setObjectAvoidanceDistance(cm):
-    _sendLidarCommand(8, [cm*10])
-    succ, _ = _receiveLidarData(8)
-
-def getObjectAvoidanceDirection():
-    _sendLidarCommand(6)
-    succ, data = _receiveLidarData(6)
-    if succ and len(data) >= 8:
-        direction = data[0]
-        blocked = data[1]
-        average_distances_lmr = []
-        for i in range(2, len(data), 2):
-            dist = data[i] | (data[i+1] << 8)
-            average_distances_lmr.append(dist//10)
-        if blocked: 
-            return 0
-        else:
-            return direction
-    else:
-        return -1
     
 pin2.set_pull(pin2.NO_PULL)
 delay = sleep
