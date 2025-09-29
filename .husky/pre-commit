@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Python-Skript ausführen
+python3 script.py stage
+
+# Überprüfen, ob das Skript erfolgreich war
+if [ $? -ne 0 ]; then
+    echo "Python script failed. Commit aborted."
+    exit 1
+fi
+
+echo "Changes were staged."
