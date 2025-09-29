@@ -165,15 +165,6 @@ def getDistanceColumn(index):
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	return[]
-def setObjectAvoidanceDistance(cm):_f6(8,[cm*10]);A,B=_f7(8)
-def getObjectAvoidanceDirection():
-	_f6(6);C,A=_f7(6)
-	if C and len(A)>=8:
-		D=A[0];E=A[1];F=[]
-		for B in range(2,len(A),2):G=A[B]|A[B+1]<<8;F.append(G//10)
-		if E:return 0
-		else:return D
-	else:return-1
 pin2.set_pull(pin2.NO_PULL)
 delay=sleep
 irR2=IRSensor(0)
