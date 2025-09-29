@@ -114,9 +114,7 @@ for item in os.listdir(os.getcwd()):
 
 if len(sys.argv) > 1 and sys.argv[1]=="stage":
     print("staging minified files")
-    subprocess.run(["git", "add", "microbit/libraries.json"])
-    subprocess.run(["git", "add", "microbit/min/*"])
-    subprocess.run(["git", "add", "calliope/libraries.json"])
-    subprocess.run(["git", "add", "calliope/min/*"])
+    subprocess.run(["git", "add", "*/libraries.json"])
+    subprocess.run(["git", "add", "*/min/*"])
 else:
     print("minified files not staged")

@@ -9,7 +9,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Änderungen staggen
-git add .
-
 echo "Changes were staged."
