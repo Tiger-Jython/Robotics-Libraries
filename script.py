@@ -3,7 +3,8 @@ import ast
 import re
 import python_minifier
 import json
-
+import sys
+import subprocess
 
 def getGlobalVariablesAndFunctions(content):
     astParsed = ast.parse(content)
@@ -110,3 +111,12 @@ for item in os.listdir(os.getcwd()):
     if os.path.isdir(item):        
         minify_directory(item, os.path.join(item, "min"))
         create_json(item)
+
+if len(sys.argv) > 1 and sys.argv[1]=="stage":
+    print("staging minified files")
+    subprocess.run(["git", "add", "microbit/libraries.json"])
+    subprocess.run(["git", "add", "microbit/min/*"])
+    subprocess.run(["git", "add", "calliope/libraries.json"])
+    subprocess.run(["git", "add", "calliope/min/*"])
+else:
+    print("minified files not staged")
