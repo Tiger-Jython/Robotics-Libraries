@@ -59,6 +59,9 @@ class IRSensor:
 		except:raise RuntimeError(_g6)
 		B=i2c.read(16,11);return B[2+2*A.index]<<8|B[1+2*A.index]
 def setLEDs(rgbl,rgbr):_f2(11,rgbl);_f2(12,rgbr)
+def setLED(rgb):setLEDs(rgb,rgb)
+def setLEDLeft(rgbl):_f2(11,rgbl)
+def setLEDRight(rgbr):_f2(12,rgbr)
 def fillRGB(red,green,blue):_g7.fill((red,green,blue));_g7.show()
 def clearRGB():_g7.clear()
 def setRGB(position,red,green,blue):
