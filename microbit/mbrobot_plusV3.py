@@ -51,8 +51,8 @@ def setSpeed(speed):
     global _powerByteL
     global _powerByteR
     _speedPercent = int(min(max(speed,0),100))
-    _powerByteL = speed
-    _powerByteR = speed
+    _powerByteL = int(round(2.4*speed+14))
+    _powerByteR = int(round(2.4*speed+14))
 
 def resetSpeed():
     setSpeed(50)

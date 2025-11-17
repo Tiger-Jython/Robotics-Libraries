@@ -23,7 +23,7 @@ def _f4(side,dir,power):
 	global _g1;_g1[1+side]=dir;_g1[2+side]=power
 	try:i2c.write(16,_g1)
 	except:raise RuntimeError(_g6)
-def setSpeed(speed):A=speed;global _g2;global _g3;global _g4;_g2=int(min(max(A,0),100));_g3=A;_g4=A
+def setSpeed(speed):A=speed;global _g2;global _g3;global _g4;_g2=int(min(max(A,0),100));_g3=int(round(2.4*A+14));_g4=int(round(2.4*A+14))
 def resetSpeed():setSpeed(50)
 def stop():_f3(0,0,0,0)
 def forward():_f3(0,_g3,0,_g4)
