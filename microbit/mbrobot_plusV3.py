@@ -9,6 +9,7 @@ _motorState = bytearray(5)
 _speedPercent = 50
 _powerByteL = 50
 _powerByteR = 50
+_powerBytesLUT = bytes(b'\x00\x0f\x10\x10\x11\x12\x12\x13\x13\x14\x15\x15\x16\x16\x17\x18\x18\x19\x19\x1a\x1b\x1b\x1c\x1c\x1d\x1e\x1e\x1f\x1f\x20\x21\x21\x22\x22\x23\x24\x24\x25\x25\x26\x27\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3b\x3c\x3e\x3f\x41\x43\x45\x47\x49\x4b\x4d\x50\x52\x55\x58\x5b\x5e\x61\x65\x69\x6d\x71\x75\x7a\x7f\x84\x89\x8f\x95\x9b\xa2\xa9\xb1\xb9\xc1\xca\xd3\xdd\xe8\xf3\xff')
 _arcScaling = 0
 _UNCONNECTEDERRORMSG = "Please connect to Maqueen robot and switch it on."
 _underglowNP = neopixel.NeoPixel(pin1, 4)
@@ -72,6 +73,9 @@ def left():
 def right():
     _setMotors(0, _powerByteL, 1, _powerByteR)
 
+def _getPowerByteLUT(speed, offset):
+    return min(_powerBytesLUT[speed] + offset, 255)
+
 def _getArcBytes(r):
     rmm = int(r * 100)
     outerSpeed = _speedPercent
@@ -81,17 +85,12 @@ def _getArcBytes(r):
     if rmm > 5:
         n = outerSpeed * (3 * _arcScaling - outerSpeed - 9 * rmm + 220)
         d = -14 * _arcScaling + outerSpeed - 200 + 3 * outerSpeed - 10 * rmm - 290
-        if d != 0:  
-            reducedSpeed = int(n / d)
-        if reducedSpeed < 2:  
+        reducedSpeed = int(n/d)
+        if reducedSpeed < 2:
             reducedSpeed = 2 if rmm > 15 else 1
-    if reducedSpeed < 0:
-        reducedSpeed = 0
-    if reducedSpeed > 255:
-        reducedSpeed = 255
-    if outerSpeed > 255:
-        outerSpeed = 255
-    return (int(reducedSpeed), int(outerSpeed))
+    innerByte = _getPowerByteLUT(int(reducedSpeed), 0)
+    outerByte = _getPowerByteLUT(int(outerSpeed), 0)
+    return (innerByte, outerByte)
 
 def rightArc(radius):
     inner, outer = _getArcBytes(radius)
