@@ -14,6 +14,8 @@ _g9=['c5:1','r','c5,1','r:3']
 _g10=bytearray(1)
 _g11=bytearray(2)
 _g12=16
+_g13=25
+_g14=131
 def _f1(reg):_g10[0]=reg;i2c.write(_g12,_g10)
 def _f2(reg,val):_g11[0]=reg;_g11[1]=val;i2c.write(_g12,_g11)
 def _f3(dirL,powerL,dirR,powerR):
@@ -45,11 +47,18 @@ def leftArc(radius):A,B=_f6(radius);_f3(0,A,0,B)
 class Motor:
 	def __init__(A,side):A._side=side
 	def rotate(B,speed):A=speed;C=int(min(max(abs(A),0),100));D=C;E=0 if A>0 else 1;_f4(B._side,E,D)
+def setServo(servo,angle):
+	D=servo;B=angle
+	if D=='P1':C=pin1
+	elif D=='P2':C=pin2
+	else:raise ValueError("Unknown Servo. Please use 'P1' or 'P2'.")
+	if B<0 or B>180:raise ValueError('Invalid angle. Must be between 0 and 180')
+	A=(_g14-_g13)*int(B);E=(A>>8)+(A>>10)+(A>>11)+(A>>12);F=_g13+E;C.set_analog_period(20);C.write_analog(F)
 class IRSensor:
-	_g16=bytes(b'\x1d')
+	_g18=bytes(b'\x1d')
 	def __init__(A,index):A.index=index
 	def read_digital(A):
-		try:i2c.write(16,IRSensor._g16)
+		try:i2c.write(16,IRSensor._g18)
 		except:raise RuntimeError(_g7)
 		B=~i2c.read(16,1)[0];return(B&2**A.index)>>A.index
 	def read_analog(A):
@@ -60,12 +69,14 @@ def setLEDs(rgbl,rgbr):_f2(11,rgbl);_f2(12,rgbr)
 def setLED(rgb):setLEDs(rgb,rgb)
 def setLEDLeft(rgbl):_f2(11,rgbl)
 def setLEDRight(rgbr):_f2(12,rgbr)
-def fillRGB(red,green,blue):_g8.fill((red,green,blue));_g8.show()
+def fillRGB(red,green,blue):_g8.clear();_g8.fill((red,green,blue));_g8.show()
+def setRGB(r,g,b):fillRGB(r,g,b)
 def clearRGB():_g8.clear()
-def setRGB(position,red,green,blue):
+def posRGB(position,red,green,blue):
 	A=position
 	if A<0 or A>3:raise ValueError('invalid RGB-LED position. Must be 0,1,2 or 3.')
 	_g8[A]=red,green,blue;_g8.show()
+setRGB=posRGB
 def setAlarm(state):
 	if state:music.play(_g9,wait=_A,loop=_B)
 	else:music.stop()
@@ -142,6 +153,7 @@ def getDistanceList():
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	else:return[]
+def getDistance():A=getDistanceList();return A[28]
 def getDistanceGrid():
 	_f7(2);G,A=_f8(2)
 	if G and len(A)>=32:

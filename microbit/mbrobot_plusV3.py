@@ -1,5 +1,5 @@
 # mbrobot_plusV3.py
-# Date 26/09/25
+# Date 25/11/25
 
 from microbit import i2c, sleep, running_time, pin2, pin1
 import neopixel
@@ -17,6 +17,8 @@ _alarmSequence = ['c5:1', 'r', 'c5,1', 'r:3']
 _buff1 = bytearray(1)
 _buff2 = bytearray(2)
 _add_mq = 0x10
+_servoMinPulse=25
+_servoMaxPulse=131
 
 def _wr1(reg):
     _buff1[0] = reg
@@ -111,6 +113,22 @@ class Motor:
         direction = 0 if speed > 0 else 1
         _setSingleMotor(self._side, direction, power)
 
+def setServo(servo,angle):
+    if servo == "P1":
+        pin = pin1
+    elif servo == "P2":
+        pin = pin2
+    else:
+        raise ValueError("Unknown Servo. Please use 'P1' or 'P2'.")
+
+    if angle < 0 or angle >180:
+        raise ValueError("Invalid angle. Must be between 0 and 180")
+    frac = (_servoMaxPulse - _servoMinPulse) * int(angle)
+    offset = (frac >> 8)+ (frac >> 10) + (frac >> 11)+ (frac >> 12) # / 180
+    usPulseTime = _servoMinPulse + offset 
+    pin.set_analog_period(20)
+    pin.write_analog(usPulseTime)
+		
 class IRSensor:
     _address = bytes(b'\x1D') 
 
@@ -147,17 +165,22 @@ def setLEDRight(rgbr):
     _wr2(12, rgbr)	
 
 def fillRGB(red, green, blue):
+    _underglowNP.clear()
     _underglowNP.fill((red,green,blue))
     _underglowNP.show()
-
+	
+def setRGB(r,g,b):
+    fillRGB(r,g,b)
+	
 def clearRGB():
     _underglowNP.clear()
 
-def setRGB(position, red, green, blue):
+def posRGB(position, red, green, blue):
     if position < 0 or position > 3:
         raise ValueError("invalid RGB-LED position. Must be 0,1,2 or 3.")
     _underglowNP[position] = (red, green, blue)
     _underglowNP.show()
+setRGB=posRGB
 
 def setAlarm(state):
     if state:
@@ -335,6 +358,10 @@ def getDistanceList():
     else:
         return []
 
+def getDistance():
+    d=getDistanceList()
+    return d[28] 
+		
 def getDistanceGrid():
     _sendLidarCommand(0x2)
     success, data = _receiveLidarData(0x2)
