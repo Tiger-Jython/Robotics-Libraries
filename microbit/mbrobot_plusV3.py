@@ -1,7 +1,7 @@
 # mbrobot_plusV3.py
 # Date 25/11/25
 
-from microbit import i2c, sleep, running_time, pin2, pin1
+from microbit import i2c, sleep, running_time, pin0, pin1, pin2
 import neopixel
 import music
 
@@ -115,15 +115,16 @@ class Motor:
         _setSingleMotor(self._side, direction, power)
 
 def setServo(servo,angle):
-    if servo == "P1":
-        pin = pin1
-    elif servo == "P2":
-        pin = pin2
-    else:
-        raise ValueError("Unknown Servo. Please use 'P1' or 'P2'.")
-
     if angle < 0 or angle >180:
         raise ValueError("Invalid angle. Must be between 0 and 180")
+    if servo in ["P0", "S1"]:
+        pin = pin0
+    elif servo in ["P1", "S2"]:
+        pin = pin1
+    elif servo in ["P2", "S3"]:
+        pin = pin2
+    else:
+        raise ValueError("Valid servo names: S1, S2, S3 or P0, P1, P2")
     frac = (_servoMaxPulse - _servoMinPulse) * int(angle)
     offset = (frac >> 8)+ (frac >> 10) + (frac >> 11)+ (frac >> 12) # / 180
     usPulseTime = _servoMinPulse + offset 

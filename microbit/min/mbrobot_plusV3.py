@@ -1,6 +1,6 @@
 _B=True
 _A=False
-from microbit import i2c,sleep,running_time,pin2,pin1
+from microbit import i2c,sleep,running_time,pin0,pin1,pin2
 import neopixel,music
 _g1=bytearray(5)
 _g2=50
@@ -49,12 +49,13 @@ class Motor:
 	def __init__(A,side):A._side=side
 	def rotate(B,speed):A=speed;C=int(min(max(abs(A),0),100));D=C;E=0 if A>0 else 1;_f4(B._side,E,D)
 def setServo(servo,angle):
-	D=servo;B=angle
-	if D=='P1':C=pin1
-	elif D=='P2':C=pin2
-	else:raise ValueError("Unknown Servo. Please use 'P1' or 'P2'.")
-	if B<0 or B>180:raise ValueError('Invalid angle. Must be between 0 and 180')
-	A=(_g14-_g13)*int(B);E=(A>>8)+(A>>10)+(A>>11)+(A>>12);F=_g13+E;C.set_analog_period(20);C.write_analog(F)
+	D=angle;C=servo
+	if D<0 or D>180:raise ValueError('Invalid angle. Must be between 0 and 180')
+	if C in['P0','S1']:A=pin0
+	elif C in['P1','S2']:A=pin1
+	elif C in['P2','S3']:A=pin2
+	else:raise ValueError('Valid servo names: S1, S2, S3 or P0, P1, P2')
+	B=(_g14-_g13)*int(D);E=(B>>8)+(B>>10)+(B>>11)+(B>>12);F=_g13+E;A.set_analog_period(20);A.write_analog(F)
 class IRSensor:
 	_g19=bytes(b'\x1d')
 	def __init__(A,index):A.index=index
