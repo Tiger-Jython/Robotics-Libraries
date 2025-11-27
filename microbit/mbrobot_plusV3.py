@@ -19,6 +19,7 @@ _buff2 = bytearray(2)
 _add_mq = 0x10
 _servoMinPulse=25
 _servoMaxPulse=131
+_lidarMode=8
 
 def _wr1(reg):
     _buff1[0] = reg
@@ -321,7 +322,8 @@ def _receiveLidarData(expectedCommand):
     return success, data
 
 def setLidarMode(mode=8):
-    mode_text = "4x4" if mode == 4 else "8x8"
+    global _lidarMode
+    mode_text = str(mode)+"x"+str(mode)
     print("Switching Lidar Mode to " + mode_text + ".\nPlease wait up to 10 seconds.")
     success = False
 
@@ -333,7 +335,8 @@ def setLidarMode(mode=8):
         sleep(17)
 
     if success:
-         sleep(5000) # WHY???
+        _lidarMode = mode
+        sleep(5000) # WHY???
     else:
         raise RuntimeError("Failed to switch Lidar Mode")
 
@@ -342,7 +345,7 @@ def getDistanceAt(x_pos, y_pos):
     success, data = _receiveLidarData(0x3)
     if success and len(data) >= 2:
         distance = (data[0] | (data[1] << 8)) // 10
-        return distance
+        return distance-5
     else:
         return 1023
 
@@ -359,8 +362,15 @@ def getDistanceList():
         return []
 
 def getDistance():
-    d=getDistanceList()
-    return d[28] 
+    global _lidarMode
+    mid = _lidarMode/2
+    topLeft = getDistanceAt(mid-1, mid-1)
+    topRight = getDistanceAt(mid, mid-1)
+    bottomLeft = getDistanceAt(mid-1, mid)
+    bottomRight = getDistanceAt(mid, mid)
+    distanceList = [topLeft, topRight, bottomLeft, bottomRight]
+    return min(distanceList)
+
 		
 def getDistanceGrid():
     _sendLidarCommand(0x2)

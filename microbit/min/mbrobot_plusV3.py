@@ -16,6 +16,7 @@ _g11=bytearray(2)
 _g12=16
 _g13=25
 _g14=131
+_g15=8
 def _f1(reg):_g10[0]=reg;i2c.write(_g12,_g10)
 def _f2(reg,val):_g11[0]=reg;_g11[1]=val;i2c.write(_g12,_g11)
 def _f3(dirL,powerL,dirR,powerR):
@@ -55,10 +56,10 @@ def setServo(servo,angle):
 	if B<0 or B>180:raise ValueError('Invalid angle. Must be between 0 and 180')
 	A=(_g14-_g13)*int(B);E=(A>>8)+(A>>10)+(A>>11)+(A>>12);F=_g13+E;C.set_analog_period(20);C.write_analog(F)
 class IRSensor:
-	_g18=bytes(b'\x1d')
+	_g19=bytes(b'\x1d')
 	def __init__(A,index):A.index=index
 	def read_digital(A):
-		try:i2c.write(16,IRSensor._g18)
+		try:i2c.write(16,IRSensor._g19)
 		except:raise RuntimeError(_g7)
 		B=~i2c.read(16,1)[0];return(B&2**A.index)>>A.index
 	def read_analog(A):
@@ -135,16 +136,16 @@ def _f8(expectedCommand):
 				except:sleep(1)
 	return B,A
 def setLidarMode(mode=8):
-	B='4x4'if mode==4 else'8x8';print('Switching Lidar Mode to '+B+'.\nPlease wait up to 10 seconds.');A=_A
-	for C in range(10):
-		_f7(1,[0,0,0,mode]);A,D=_f8(1)
-		if A==_B:break
+	A=mode;global _g15;C=str(A)+'x'+str(A);print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_A
+	for D in range(10):
+		_f7(1,[0,0,0,A]);B,E=_f8(1)
+		if B==_B:break
 		sleep(17)
-	if A:sleep(5000)
+	if B:_g15=A;sleep(5000)
 	else:raise RuntimeError('Failed to switch Lidar Mode')
 def getDistanceAt(x_pos,y_pos):
 	_f7(3,[x_pos,y_pos]);B,A=_f8(3)
-	if B and len(A)>=2:C=(A[0]|A[1]<<8)//10;return C
+	if B and len(A)>=2:C=(A[0]|A[1]<<8)//10;return C-5
 	else:return 1023
 def getDistanceList():
 	_f7(2);D,A=_f8(2)
@@ -153,7 +154,7 @@ def getDistanceList():
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	else:return[]
-def getDistance():A=getDistanceList();return A[28]
+def getDistance():global _g15;A=_g15/2;B=getDistanceAt(A-1,A-1);C=getDistanceAt(A,A-1);D=getDistanceAt(A-1,A);E=getDistanceAt(A,A);F=[B,C,D,E];return min(F)
 def getDistanceGrid():
 	_f7(2);G,A=_f8(2)
 	if G and len(A)>=32:
