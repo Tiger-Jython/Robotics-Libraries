@@ -1,6 +1,6 @@
 _B=True
 _A=False
-from microbit import i2c,sleep,running_time,pin2,pin1
+from microbit import i2c,sleep,running_time,pin0,pin1,pin2
 import neopixel,music
 _g1=bytearray(5)
 _g2=50
@@ -14,6 +14,9 @@ _g9=['c5:1','r','c5,1','r:3']
 _g10=bytearray(1)
 _g11=bytearray(2)
 _g12=16
+_g13=25
+_g14=131
+_g15=8
 def _f1(reg):_g10[0]=reg;i2c.write(_g12,_g10)
 def _f2(reg,val):_g11[0]=reg;_g11[1]=val;i2c.write(_g12,_g11)
 def _f3(dirL,powerL,dirR,powerR):
@@ -45,11 +48,19 @@ def leftArc(radius):A,B=_f6(radius);_f3(0,A,0,B)
 class Motor:
 	def __init__(A,side):A._side=side
 	def rotate(B,speed):A=speed;C=int(min(max(abs(A),0),100));D=C;E=0 if A>0 else 1;_f4(B._side,E,D)
+def setServo(servo,angle):
+	D=angle;C=servo
+	if D<0 or D>180:raise ValueError('Invalid angle. Must be between 0 and 180')
+	if C in['P0','S1']:A=pin0
+	elif C in['P1','S2']:A=pin1
+	elif C in['P2','S3']:A=pin2
+	else:raise ValueError('Valid servo names: S1, S2, S3 or P0, P1, P2')
+	B=(_g14-_g13)*int(D);E=(B>>8)+(B>>10)+(B>>11)+(B>>12);F=_g13+E;A.set_analog_period(20);A.write_analog(F)
 class IRSensor:
-	_g16=bytes(b'\x1d')
+	_g19=bytes(b'\x1d')
 	def __init__(A,index):A.index=index
 	def read_digital(A):
-		try:i2c.write(16,IRSensor._g16)
+		try:i2c.write(16,IRSensor._g19)
 		except:raise RuntimeError(_g7)
 		B=~i2c.read(16,1)[0];return(B&2**A.index)>>A.index
 	def read_analog(A):
@@ -60,9 +71,10 @@ def setLEDs(rgbl,rgbr):_f2(11,rgbl);_f2(12,rgbr)
 def setLED(rgb):setLEDs(rgb,rgb)
 def setLEDLeft(rgbl):_f2(11,rgbl)
 def setLEDRight(rgbr):_f2(12,rgbr)
-def fillRGB(red,green,blue):_g8.fill((red,green,blue));_g8.show()
+def fillRGB(red,green,blue):_g8.clear();_g8.fill((red,green,blue));_g8.show()
+def setRGB(r,g,b):fillRGB(r,g,b)
 def clearRGB():_g8.clear()
-def setRGB(position,red,green,blue):
+def posRGB(position,red,green,blue):
 	A=position
 	if A<0 or A>3:raise ValueError('invalid RGB-LED position. Must be 0,1,2 or 3.')
 	_g8[A]=red,green,blue;_g8.show()
@@ -124,12 +136,12 @@ def _f8(expectedCommand):
 				except:sleep(1)
 	return B,A
 def setLidarMode(mode=8):
-	B='4x4'if mode==4 else'8x8';print('Switching Lidar Mode to '+B+'.\nPlease wait up to 10 seconds.');A=_A
-	for C in range(10):
-		_f7(1,[0,0,0,mode]);A,D=_f8(1)
-		if A==_B:break
+	A=mode;global _g15;C=str(A)+'x'+str(A);print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_A
+	for D in range(10):
+		_f7(1,[0,0,0,A]);B,E=_f8(1)
+		if B==_B:break
 		sleep(17)
-	if A:sleep(5000)
+	if B:_g15=A;sleep(5000)
 	else:raise RuntimeError('Failed to switch Lidar Mode')
 def getDistanceAt(x_pos,y_pos):
 	_f7(3,[x_pos,y_pos]);B,A=_f8(3)
@@ -142,6 +154,7 @@ def getDistanceList():
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	else:return[]
+def getDistance():global _g15;A=_g15/2;B=getDistanceAt(A-1,A-1);C=getDistanceAt(A,A-1);D=getDistanceAt(A-1,A);E=getDistanceAt(A,A);F=[B,C,D,E];return min(F)
 def getDistanceGrid():
 	_f7(2);G,A=_f8(2)
 	if G and len(A)>=32:
