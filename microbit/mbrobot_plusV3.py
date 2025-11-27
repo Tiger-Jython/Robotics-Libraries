@@ -323,7 +323,9 @@ def _receiveLidarData(expectedCommand):
 
 def setLidarMode(mode=8):
     global _lidarMode
-    mode_text = str(mode)+"x"+str(mode)
+    if 4 != mode or 8!=mode:
+        raise ValueError("Lidar mode must be 4 or 8")
+    mode_text = "4x4" if mode == 4 else "8x8"
     print("Switching Lidar Mode to " + mode_text + ".\nPlease wait up to 10 seconds.")
     success = False
 
