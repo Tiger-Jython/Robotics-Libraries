@@ -181,7 +181,6 @@ def posRGB(position, red, green, blue):
         raise ValueError("invalid RGB-LED position. Must be 0,1,2 or 3.")
     _underglowNP[position] = (red, green, blue)
     _underglowNP.show()
-setRGB=posRGB
 
 def setAlarm(state):
     if state:
@@ -336,7 +335,7 @@ def setLidarMode(mode=8):
 
     if success:
         _lidarMode = mode
-        sleep(5000) # WHY???
+        sleep(5000)
     else:
         raise RuntimeError("Failed to switch Lidar Mode")
 
@@ -345,7 +344,7 @@ def getDistanceAt(x_pos, y_pos):
     success, data = _receiveLidarData(0x3)
     if success and len(data) >= 2:
         distance = (data[0] | (data[1] << 8)) // 10
-        return distance-5
+        return distance
     else:
         return 1023
 

@@ -77,7 +77,6 @@ def posRGB(position,red,green,blue):
 	A=position
 	if A<0 or A>3:raise ValueError('invalid RGB-LED position. Must be 0,1,2 or 3.')
 	_g8[A]=red,green,blue;_g8.show()
-setRGB=posRGB
 def setAlarm(state):
 	if state:music.play(_g9,wait=_A,loop=_B)
 	else:music.stop()
@@ -145,7 +144,7 @@ def setLidarMode(mode=8):
 	else:raise RuntimeError('Failed to switch Lidar Mode')
 def getDistanceAt(x_pos,y_pos):
 	_f7(3,[x_pos,y_pos]);B,A=_f8(3)
-	if B and len(A)>=2:C=(A[0]|A[1]<<8)//10;return C-5
+	if B and len(A)>=2:C=(A[0]|A[1]<<8)//10;return C
 	else:return 1023
 def getDistanceList():
 	_f7(2);D,A=_f8(2)
