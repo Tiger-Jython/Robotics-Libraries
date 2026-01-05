@@ -174,7 +174,13 @@ def getDistanceColumn(index):
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	return[]
-def getDistanceRow(index):return getDistanceGrid()[index]
+def getDistanceRow(index):
+	_f7(6,[index]);D,A=_f8(6)
+	if D and len(A)>=8:
+		B=[]
+		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
+		return B
+	return[]
 pin2.set_pull(pin2.NO_PULL)
 delay=sleep
 irR2=IRSensor(0)
