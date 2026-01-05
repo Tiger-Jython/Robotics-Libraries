@@ -136,7 +136,9 @@ def _f8(expectedCommand):
 				except:sleep(1)
 	return B,A
 def setLidarMode(mode=8):
-	A=mode;global _g15;C=str(A)+'x'+str(A);print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_A
+	A=mode;global _g15
+	if A not in[4,8]:raise ValueError('Lidar mode must be 4 or 8')
+	C='4x4'if A==4 else'8x8';print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_A
 	for D in range(10):
 		_f7(1,[0,0,0,A]);B,E=_f8(1)
 		if B==_B:break
@@ -165,20 +167,14 @@ def getDistanceGrid():
 			B.append(E)
 		return B
 	else:return[]
-def getDistanceRow(index):
+def getDistanceColumn(index):
 	_f7(5,[index]);D,A=_f8(5)
 	if D and len(A)>=8:
 		B=[]
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	return[]
-def getDistanceColumn(index):
-	_f7(6,[index]);D,A=_f8(6)
-	if D and len(A)>=8:
-		B=[]
-		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
-		return B
-	return[]
+def getDistanceRow(index):return getDistanceGrid()[index]
 pin2.set_pull(pin2.NO_PULL)
 delay=sleep
 irR2=IRSensor(0)

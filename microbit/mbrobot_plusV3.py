@@ -390,7 +390,7 @@ def getDistanceGrid():
     else:
         return []
 
-def getDistanceRow(index):
+def getDistanceColumn(index):
     _sendLidarCommand(0x5, [index])
     success, data = _receiveLidarData(0x5)
     if success and len(data) >= 8:
@@ -401,16 +401,9 @@ def getDistanceRow(index):
         return row
     return []
 
-def getDistanceColumn(index):
-    _sendLidarCommand(0x6, [index])
-    success, data = _receiveLidarData(0x6)
-    if success and len(data) >= 8:
-        col = []
-        for i in range(0, len(data), 2):
-            distance = data[i] | (data[i+1] << 8)
-            col.append(distance // 10)
-        return col
-    return []
+def getDistanceRow(index):
+    return getDistanceGrid()[index]
+
     
 pin2.set_pull(pin2.NO_PULL)
 delay = sleep
