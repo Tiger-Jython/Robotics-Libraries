@@ -365,7 +365,7 @@ def getDistanceList():
 
 def getDistance():
     global _lidarMode
-    mid = _lidarMode/2
+    mid = int(_lidarMode/2)
     topLeft = getDistanceAt(mid-1, mid-1)
     topRight = getDistanceAt(mid, mid-1)
     bottomLeft = getDistanceAt(mid-1, mid)
@@ -390,7 +390,7 @@ def getDistanceGrid():
     else:
         return []
 
-def getDistanceRow(index):
+def getDistanceColumn(index):
     _sendLidarCommand(0x5, [index])
     success, data = _receiveLidarData(0x5)
     if success and len(data) >= 8:
@@ -401,7 +401,7 @@ def getDistanceRow(index):
         return row
     return []
 
-def getDistanceColumn(index):
+def getDistanceRow(index):
     _sendLidarCommand(0x6, [index])
     success, data = _receiveLidarData(0x6)
     if success and len(data) >= 8:
@@ -411,6 +411,7 @@ def getDistanceColumn(index):
             col.append(distance // 10)
         return col
     return []
+
     
 pin2.set_pull(pin2.NO_PULL)
 delay = sleep
