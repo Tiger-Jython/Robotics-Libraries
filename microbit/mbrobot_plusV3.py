@@ -365,7 +365,7 @@ def getDistanceList():
 
 def getDistance():
     global _lidarMode
-    mid = _lidarMode/2
+    mid = int(_lidarMode/2)
     topLeft = getDistanceAt(mid-1, mid-1)
     topRight = getDistanceAt(mid, mid-1)
     bottomLeft = getDistanceAt(mid-1, mid)

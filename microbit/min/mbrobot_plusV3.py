@@ -156,7 +156,7 @@ def getDistanceList():
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	else:return[]
-def getDistance():global _g15;A=_g15/2;B=getDistanceAt(A-1,A-1);C=getDistanceAt(A,A-1);D=getDistanceAt(A-1,A);E=getDistanceAt(A,A);F=[B,C,D,E];return min(F)
+def getDistance():global _g15;A=int(_g15/2);B=getDistanceAt(A-1,A-1);C=getDistanceAt(A,A-1);D=getDistanceAt(A-1,A);E=getDistanceAt(A,A);F=[B,C,D,E];return min(F)
 def getDistanceGrid():
 	_f7(2);G,A=_f8(2)
 	if G and len(A)>=32:
