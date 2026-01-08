@@ -1,3 +1,12 @@
+1.3.3
+- Update mbrobot_plusV3 
+    - Fix getDistance() flashing to 
+    - Refactor getDistanceRow()
+    - Refactor getDistanceColumn()
+
+- Update mbrobot_plusV2
+    - Add posRGB() to mbrobot_plusV2
+
 1.3.2
 
 - Update mbrobot_plusV3
