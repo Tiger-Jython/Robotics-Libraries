@@ -420,13 +420,13 @@ def fillRGB(red, green, blue):
     for i in range(4):
         _underglowNP[i] = (red, green, blue)
     _underglowNP.show()
+setRGB=fillRGB
 
 
 def clearRGB():
     _underglowNP.clear()
 
-
-def setRGB(position, red, green, blue):
+def posRGB(position, red, green, blue):
     # """Uses Neopixel to set a single RGB LED of the robot.
 
     # Parameters:

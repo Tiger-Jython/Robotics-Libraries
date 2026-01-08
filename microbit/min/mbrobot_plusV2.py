@@ -77,8 +77,9 @@ def setLEDRight(state):global _g11;_g11[2]=state;i2c.write(16,_g11)
 def fillRGB(red,green,blue):
 	for A in range(4):_g12[A]=red,green,blue
 	_g12.show()
+setRGB=fillRGB
 def clearRGB():_g12.clear()
-def setRGB(position,red,green,blue):
+def posRGB(position,red,green,blue):
 	A=position
 	if A<0 or A>3:raise ValueError('invalid RGB-LED position. Must be 0,1,2 or 3.')
 	_g12[A]=red,green,blue;_g12.show()
