@@ -1,6 +1,6 @@
 1.3.3
 - Update mbrobot_plusV3 
-    - Fix getDistance() flashing to 
+    - Fix getDistance()
     - Refactor getDistanceRow()
     - Refactor getDistanceColumn()
 
