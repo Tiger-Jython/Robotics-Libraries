@@ -157,8 +157,9 @@ def setLEDs(rgbl, rgbr):
     _wr2(11, rgbl)
     _wr2(12, rgbr)
 
-def setLED(rgb):
-    setLEDs(rgb, rgb)
+def setLED(state, stateR=None):
+    stateR = stateR if stateR != None else state
+    setLEDs(state, stateR)
 	
 def setLEDLeft(rgbl):
     _wr2(11, rgbl)
