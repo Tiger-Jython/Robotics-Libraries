@@ -64,8 +64,9 @@ def setLEDRight(state):pin12.write_digital(state)
 def fillRGB(red,green,blue):
 	for A in range(4):_g10[A]=red,green,blue
 	_g10.show()
+setRGB=fillRGB
 def clearRGB():_g10.clear()
-def setRGB(position,red,green,blue):
+def posRGB(position,red,green,blue):
 	A=position
 	if A<0 or A>3:raise ValueError('invalid RGB-LED position. Must be 0,1,2 or 3.')
 	_g10[A]=red,green,blue;_g10.show()
