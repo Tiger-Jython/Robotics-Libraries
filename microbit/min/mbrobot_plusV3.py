@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 _D=True
 _C=False
 _B=None
-=======
-_D=None
-_C=True
-_B=False
->>>>>>> 4456bffe0f69112a83d62fb3fdcecde860bb339d
 _A=')'
 from microbit import i2c,sleep,running_time,pin0,pin1,pin2
 import neopixel,music
@@ -87,19 +81,11 @@ def posRGB(position,red,green,blue):
 	if A<0 or A>3:raise ValueError('invalid RGB-LED position. Must be 0,1,2 or 3.')
 	_g8[A]=red,green,blue;_g8.show()
 def setAlarm(state):
-<<<<<<< HEAD
 	if state:music.play(_g9,wait=_C,loop=_D)
 	else:music.stop()
 def beep():music.pitch(440,200,wait=_C)
 def readLightIntensity(side):
 	_f1(78);A=i2c.read(16,4,repeat=_C)
-=======
-	if state:music.play(_g9,wait=_B,loop=_C)
-	else:music.stop()
-def beep():music.pitch(440,200,wait=_B)
-def readLightIntensity(side):
-	_f1(78);A=i2c.read(16,4,repeat=_B)
->>>>>>> 4456bffe0f69112a83d62fb3fdcecde860bb339d
 	if side==1:return A[0]<<8|A[1]
 	else:return A[2]<<8|A[3]
 def setPatrolSpeed(speed):_f2(63,speed)
@@ -137,7 +123,6 @@ def _f7(cmd,args=[]):
 	for(D,E)in enumerate(args):A[4+D]=E
 	i2c.write(51,A)
 def _f8(expectedCommand):
-<<<<<<< HEAD
 	F=1000;J=32;G=running_time();B=_C;A=_B;C=_C
 	while running_time()-G<F and C==_C:
 		H=i2c.read(51,1)[0]
@@ -148,18 +133,6 @@ def _f8(expectedCommand):
 		D=i2c.read(51,3);K=D[0];L=D[1]|D[2]<<8
 		if K==expectedCommand:
 			B=_D;A=bytearray();E=L;M=min(E,J)
-=======
-	F=1000;J=32;G=running_time();B=_B;A=_D;C=_B
-	while running_time()-G<F and C==_B:
-		H=i2c.read(51,1)[0]
-		if H==83:C=_C
-		elif H==99:return B,A
-		sleep(16)
-	if C==_C:
-		D=i2c.read(51,3);K=D[0];L=D[1]|D[2]<<8
-		if K==expectedCommand:
-			B=_C;A=bytearray();E=L;M=min(E,J)
->>>>>>> 4456bffe0f69112a83d62fb3fdcecde860bb339d
 			while running_time()-G<F and E>0:
 				try:I=i2c.read(51,M);A.extend(I);E-=len(I)
 				except:sleep(1)
@@ -167,17 +140,10 @@ def _f8(expectedCommand):
 def setLidarMode(mode=8):
 	A=mode;global _g15
 	if A not in[4,8]:raise ValueError('Lidar mode must be 4 or 8')
-<<<<<<< HEAD
 	C='4x4'if A==4 else'8x8';print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_C
 	for D in range(10):
 		_f7(1,[0,0,0,A]);B,E=_f8(1)
 		if B==_D:break
-=======
-	C='4x4'if A==4 else'8x8';print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_B
-	for D in range(10):
-		_f7(1,[0,0,0,A]);B,E=_f8(1)
-		if B==_C:break
->>>>>>> 4456bffe0f69112a83d62fb3fdcecde860bb339d
 		sleep(17)
 	if B:_g15=A;sleep(5000)
 	else:raise RuntimeError('Failed to switch Lidar Mode')
@@ -227,15 +193,9 @@ class RobotContext:
 	@staticmethod
 	def useBackground(sprite):print('RobotContext.useBackground('+str(sprite)+_A)
 	@staticmethod
-<<<<<<< HEAD
 	def useObstacle(sprite,x=_B,y=_B):
 		A=str(sprite)
 		if x is not _B and y is not _B:A=A+','+str(x)+','+str(y)
-=======
-	def useObstacle(sprite,x=_D,y=_D):
-		A=str(sprite)
-		if x is not _D and y is not _D:A=A+','+str(x)+','+str(y)
->>>>>>> 4456bffe0f69112a83d62fb3fdcecde860bb339d
 		print('RobotContext.useObstacle('+A+_A)
 	@staticmethod
 	def enableRotCenter(value):print('RobotContext.enableRotCenter('+str(value)+_A)
