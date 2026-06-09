@@ -475,6 +475,45 @@ class IR:
     L2 = 4
     masks = [0x01, 0x02, 0x04, 0x08, 0x10]
 
+class RobotContext:
+    @staticmethod
+    def enableTrace(value):
+        print("RobotContext.enableTrace(" + str(value) + ")")
+    
+    @staticmethod
+    def setStartPosition(x, y):
+        print("RobotContext.setStartPosition(" + str(x) + "," + str(y) + ")")
+    
+    @staticmethod
+    def setStartDirection(w):
+        print("RobotContext.setStartDirection(" + str(w) + ")")
+    
+    @staticmethod
+    def useBackground(sprite):
+        print("RobotContext.useBackground(" + str(sprite) + ")")
+    
+    @staticmethod
+    def useObstacle(sprite, x=None, y=None):
+        args = str(sprite)
+        if x is not None and y is not None:
+            args = args + "," + str(x) + "," + str(y)
+        print("RobotContext.useObstacle(" + args + ")")
+
+    @staticmethod
+    def enableRotCenter(value):
+        print("RobotContext.enableRotCenter(" + str(value) + ")")
+
+def setBeamAreaColor(color):
+    print("setBeamAreaColor(" + str(color) + ")")
+
+def setProximityCircleColor(color):
+    print("setProximityCircleColor(" + str(color) + ")")
+
+def setMeshTriangleColor(color):
+    print("setMeshTriangleColor(" + str(color) + ")")
+
+def eraseBeamArea():
+    print("eraseBeamArea()")
 
 # Default instances
 pin2.set_pull(pin2.NO_PULL)

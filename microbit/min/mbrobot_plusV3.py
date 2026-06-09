@@ -1,5 +1,7 @@
-_B=True
-_A=False
+_D=None
+_C=True
+_B=False
+_A=')'
 from microbit import i2c,sleep,running_time,pin0,pin1,pin2
 import neopixel,music
 _g1=bytearray(5)
@@ -79,11 +81,11 @@ def posRGB(position,red,green,blue):
 	if A<0 or A>3:raise ValueError('invalid RGB-LED position. Must be 0,1,2 or 3.')
 	_g8[A]=red,green,blue;_g8.show()
 def setAlarm(state):
-	if state:music.play(_g9,wait=_A,loop=_B)
+	if state:music.play(_g9,wait=_B,loop=_C)
 	else:music.stop()
-def beep():music.pitch(440,200,wait=_A)
+def beep():music.pitch(440,200,wait=_B)
 def readLightIntensity(side):
-	_f1(78);A=i2c.read(16,4,repeat=_A)
+	_f1(78);A=i2c.read(16,4,repeat=_B)
 	if side==1:return A[0]<<8|A[1]
 	else:return A[2]<<8|A[3]
 def setPatrolSpeed(speed):_f2(63,speed)
@@ -121,16 +123,16 @@ def _f7(cmd,args=[]):
 	for(D,E)in enumerate(args):A[4+D]=E
 	i2c.write(51,A)
 def _f8(expectedCommand):
-	F=1000;J=32;G=running_time();B=_A;A=None;C=_A
-	while running_time()-G<F and C==_A:
+	F=1000;J=32;G=running_time();B=_B;A=_D;C=_B
+	while running_time()-G<F and C==_B:
 		H=i2c.read(51,1)[0]
-		if H==83:C=_B
+		if H==83:C=_C
 		elif H==99:return B,A
 		sleep(16)
-	if C==_B:
+	if C==_C:
 		D=i2c.read(51,3);K=D[0];L=D[1]|D[2]<<8
 		if K==expectedCommand:
-			B=_B;A=bytearray();E=L;M=min(E,J)
+			B=_C;A=bytearray();E=L;M=min(E,J)
 			while running_time()-G<F and E>0:
 				try:I=i2c.read(51,M);A.extend(I);E-=len(I)
 				except:sleep(1)
@@ -138,10 +140,10 @@ def _f8(expectedCommand):
 def setLidarMode(mode=8):
 	A=mode;global _g15
 	if A not in[4,8]:raise ValueError('Lidar mode must be 4 or 8')
-	C='4x4'if A==4 else'8x8';print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_A
+	C='4x4'if A==4 else'8x8';print('Switching Lidar Mode to '+C+'.\nPlease wait up to 10 seconds.');B=_B
 	for D in range(10):
 		_f7(1,[0,0,0,A]);B,E=_f8(1)
-		if B==_B:break
+		if B==_C:break
 		sleep(17)
 	if B:_g15=A;sleep(5000)
 	else:raise RuntimeError('Failed to switch Lidar Mode')
@@ -181,6 +183,26 @@ def getDistanceRow(index):
 		for C in range(0,len(A),2):E=A[C]|A[C+1]<<8;B.append(E//10)
 		return B
 	return[]
+class RobotContext:
+	@staticmethod
+	def enableTrace(value):print('RobotContext.enableTrace('+str(value)+_A)
+	@staticmethod
+	def setStartPosition(x,y):print('RobotContext.setStartPosition('+str(x)+','+str(y)+_A)
+	@staticmethod
+	def setStartDirection(w):print('RobotContext.setStartDirection('+str(w)+_A)
+	@staticmethod
+	def useBackground(sprite):print('RobotContext.useBackground('+str(sprite)+_A)
+	@staticmethod
+	def useObstacle(sprite,x=_D,y=_D):
+		A=str(sprite)
+		if x is not _D and y is not _D:A=A+','+str(x)+','+str(y)
+		print('RobotContext.useObstacle('+A+_A)
+	@staticmethod
+	def enableRotCenter(value):print('RobotContext.enableRotCenter('+str(value)+_A)
+def setBeamAreaColor(color):print('setBeamAreaColor('+str(color)+_A)
+def setProximityCircleColor(color):print('setProximityCircleColor('+str(color)+_A)
+def setMeshTriangleColor(color):print('setMeshTriangleColor('+str(color)+_A)
+def eraseBeamArea():print('eraseBeamArea()')
 pin2.set_pull(pin2.NO_PULL)
 delay=sleep
 irR2=IRSensor(0)
