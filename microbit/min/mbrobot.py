@@ -1,3 +1,5 @@
+_B=None
+_A=')'
 from microbit import i2c,pin1,pin2,pin8,pin12,pin13,pin14,pin15,sleep
 import gc,machine,music,neopixel
 _g1=50
@@ -58,7 +60,7 @@ class IRSensor:
 	def read_digital(A):return A._pin.read_digital()
 	def read_analog(A):raise NameError('Maqueen Lite does not support reading analog sensor values.')
 def getDistance():pin1.write_digital(1);pin1.write_digital(0);A=machine.time_pulse_us(pin2,1,50000);B=(A>>6)+(A>>10)+(A>>11)+(A>>12)+1;return max(min(B,500),0)if B>0 else 255
-def setLED(state,stateR=None):B=state;A=stateR;A=A if A!=None else B;pin8.write_digital(B);pin12.write_digital(A)
+def setLED(state,stateR=_B):B=state;A=stateR;A=A if A!=_B else B;pin8.write_digital(B);pin12.write_digital(A)
 def setLEDLeft(state):pin8.write_digital(state)
 def setLEDRight(state):pin12.write_digital(state)
 def fillRGB(red,green,blue):
@@ -74,6 +76,26 @@ def setAlarm(state):
 	if state:music.play(_g11,wait=False,loop=True)
 	else:music.stop()
 def beep():music.pitch(440,200,wait=False)
+class RobotContext:
+	@staticmethod
+	def enableTrace(value):print('RobotContext.enableTrace('+str(value)+_A)
+	@staticmethod
+	def setStartPosition(x,y):print('RobotContext.setStartPosition('+str(x)+','+str(y)+_A)
+	@staticmethod
+	def setStartDirection(w):print('RobotContext.setStartDirection('+str(w)+_A)
+	@staticmethod
+	def useBackground(sprite):print('RobotContext.useBackground('+str(sprite)+_A)
+	@staticmethod
+	def useObstacle(sprite,x=_B,y=_B):
+		A=str(sprite)
+		if x is not _B and y is not _B:A=A+','+str(x)+','+str(y)
+		print('RobotContext.useObstacle('+A+_A)
+	@staticmethod
+	def enableRotCenter(value):print('RobotContext.enableRotCenter('+str(value)+_A)
+def setBeamAreaColor(color):print('setBeamAreaColor('+str(color)+_A)
+def setProximityCircleColor(color):print('setProximityCircleColor('+str(color)+_A)
+def setMeshTriangleColor(color):print('setMeshTriangleColor('+str(color)+_A)
+def eraseBeamArea():print('eraseBeamArea()')
 pin2.set_pull(pin2.NO_PULL)
 delay=sleep
 irLeft=IRSensor(pin13)

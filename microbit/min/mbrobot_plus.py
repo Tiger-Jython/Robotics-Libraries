@@ -1,11 +1,13 @@
-_A='Please switch on mbRobot!'
+_C='Please switch on mbRobot!'
+_B=None
+_A=')'
 from microbit import i2c,pin0,pin1,pin2,sleep
 import machine,gc,music
 _g1=50
 _g2=.082
 def w(d1,d2,s1,s2):
 	try:i2c.write(16,bytearray([0,d1,d2,s1,s2]))
-	except:print(_A)
+	except:print(_C)
 def setSpeed(speed):
 	A=speed;global _g1
 	if A<30 and A!=0:setPID(1);_g1=A+30
@@ -13,7 +15,7 @@ def setSpeed(speed):
 	else:setPID(0);_g1=A
 def setPID(pd):i2c.write(16,bytearray([10,pd]))
 def stop():setPID(0);w(0,0,0,0)
-def resetSpeed():setPID(0);A=50
+def resetSpeed():global _g1;setPID(0);_g1=50
 def forward():w(1,_g1,1,_g1)
 def backward():w(2,_g1,2,_g1)
 def left():A=1.825-.0175*_g1;w(2,int(_g1*A),1,int(_g1*A))
@@ -36,7 +38,7 @@ class Motor:
 	def _f2(A,d,s):
 		try:i2c.write(16,bytearray([A._id,d,s]))
 		except:
-			print(_A)
+			print(_C)
 			while True:0
 	def rotate(A,s):
 		B=abs(s)
@@ -44,7 +46,7 @@ class Motor:
 		elif s<0:A._f2(2,B)
 		else:A._f2(0,0)
 class LEDState:OFF=0;RED=1;GREEN=2;YELLOW=3;BLUE=4;PINK=5;CYAN=6;WHITE=7
-def setLED(state,stateR=None):B=state;A=stateR;A=A or B;i2c.write(16,bytearray([11,B,A]))
+def setLED(state,stateR=_B):B=state;A=stateR;A=A or B;i2c.write(16,bytearray([11,B,A]))
 def setLEDLeft(state):i2c.write(16,bytearray([11,state]))
 def setLEDRight(state):i2c.write(16,bytearray([12,state]))
 def setAlarm(on):
@@ -60,6 +62,26 @@ class IR:L3=0;L2=1;L1=2;R1=3;R2=4;R3=5;masks=[1,2,4,8,16,32]
 class IRSensor:
 	def __init__(A,index):A.index=index
 	def read_digital(A):B=ir_read_values_as_byte();return(B&IR.masks[A.index])>>A.index
+class RobotContext:
+	@staticmethod
+	def enableTrace(value):print('RobotContext.enableTrace('+str(value)+_A)
+	@staticmethod
+	def setStartPosition(x,y):print('RobotContext.setStartPosition('+str(x)+','+str(y)+_A)
+	@staticmethod
+	def setStartDirection(w):print('RobotContext.setStartDirection('+str(w)+_A)
+	@staticmethod
+	def useBackground(sprite):print('RobotContext.useBackground('+str(sprite)+_A)
+	@staticmethod
+	def useObstacle(sprite,x=_B,y=_B):
+		A=str(sprite)
+		if x is not _B and y is not _B:A=A+','+str(x)+','+str(y)
+		print('RobotContext.useObstacle('+A+_A)
+	@staticmethod
+	def enableRotCenter(value):print('RobotContext.enableRotCenter('+str(value)+_A)
+def setBeamAreaColor(color):print('setBeamAreaColor('+str(color)+_A)
+def setProximityCircleColor(color):print('setProximityCircleColor('+str(color)+_A)
+def setMeshTriangleColor(color):print('setMeshTriangleColor('+str(color)+_A)
+def eraseBeamArea():print('eraseBeamArea()')
 irLeft=IRSensor(IR.L1)
 irRight=IRSensor(IR.R1)
 irL1=IRSensor(IR.L1)

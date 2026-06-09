@@ -35,6 +35,7 @@ def stop():
     w(0, 0, 0, 0) 
     
 def resetSpeed():
+    global _v
     setPID(0)
     _v = 50          
 
@@ -162,6 +163,46 @@ class IRSensor:
     def read_digital(self):
         byte = ir_read_values_as_byte()
         return (byte & IR.masks[self.index]) >> self.index
+    
+class RobotContext:
+    @staticmethod
+    def enableTrace(value):
+        print("RobotContext.enableTrace(" + str(value) + ")")
+    
+    @staticmethod
+    def setStartPosition(x, y):
+        print("RobotContext.setStartPosition(" + str(x) + "," + str(y) + ")")
+    
+    @staticmethod
+    def setStartDirection(w):
+        print("RobotContext.setStartDirection(" + str(w) + ")")
+    
+    @staticmethod
+    def useBackground(sprite):
+        print("RobotContext.useBackground(" + str(sprite) + ")")
+    
+    @staticmethod
+    def useObstacle(sprite, x=None, y=None):
+        args = str(sprite)
+        if x is not None and y is not None:
+            args = args + "," + str(x) + "," + str(y)
+        print("RobotContext.useObstacle(" + args + ")")
+
+    @staticmethod
+    def enableRotCenter(value):
+        print("RobotContext.enableRotCenter(" + str(value) + ")")
+
+def setBeamAreaColor(color):
+    print("setBeamAreaColor(" + str(color) + ")")
+
+def setProximityCircleColor(color):
+    print("setProximityCircleColor(" + str(color) + ")")
+
+def setMeshTriangleColor(color):
+    print("setMeshTriangleColor(" + str(color) + ")")
+
+def eraseBeamArea():
+    print("eraseBeamArea()")
 
 irLeft = IRSensor(IR.L1)
 irRight = IRSensor(IR.R1)
