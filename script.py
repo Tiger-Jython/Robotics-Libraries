@@ -137,7 +137,6 @@ for item in DEVICE_DIRS:
 if len(sys.argv) > 1 and sys.argv[1]=="stage":
     print("staging minified files")
     subprocess.run(["git", "add", "*/libraries.json"])
-    subprocess.run(["git", "add", "*/libraries.raw.json"])
     subprocess.run(["git", "add", "*/min/*"])
 else:
     print("minified files not staged")
