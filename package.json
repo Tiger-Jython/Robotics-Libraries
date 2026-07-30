@@ -5,7 +5,7 @@
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Tiger-Jython/Robotics-Libraries.git"
+    "url": "git+ssh://git@gitlab.inf.ethz.ch/public-dkomm/webtp/robotics_libraries.git"
   },
   "keywords": [
     "tigerjython",
@@ -40,7 +40,7 @@
     "build:py": "python3 script.py",
     "build:ts": "tsup",
     "build": "npm run build:py && npm run build:ts",
-    "prepare": "husky",
+    "prepare": "husky && npm run build",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {

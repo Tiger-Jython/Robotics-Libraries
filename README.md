@@ -10,13 +10,15 @@ From the npm registry:
 npm install @tigerpython/robotics-libraries
 ```
 
-Directly from this git repository (e.g. to track `main` or pin a specific commit/tag/branch instead of a published version):
+Directly from this git repository (e.g. to track `main` or pin a specific commit/tag/branch instead of a published version). This requires Python 3 with [`python-minifier`](https://pypi.org/project/python-minifier/) available, since installing from git triggers a full rebuild (see [Development](#development)):
 
 ```bash
-npm install git+https://github.com/Tiger-Jython/Robotics-Libraries.git
+npm install git+ssh://git@gitlab.inf.ethz.ch/public-dkomm/webtp/robotics_libraries.git
 # or pinned to a tag/branch/commit:
-npm install git+https://github.com/Tiger-Jython/Robotics-Libraries.git#v1.4.0
+npm install git+ssh://git@gitlab.inf.ethz.ch/public-dkomm/webtp/robotics_libraries.git#v1.4.0
 ```
+
+(`github.com/Tiger-Jython/Robotics-Libraries` is a read-only mirror of this repository; GitLab is the canonical source.)
 
 ## Usage
 
@@ -74,4 +76,6 @@ pip install python-minifier
 npm run build       # regenerates calliope/ and microbit/ JSON + minified .py, then builds dist/
 ```
 
-A pre-commit hook (via husky) runs the Python minification step automatically and stages the regenerated files.
+`dist/` and the `libraries.raw.json` files are build artifacts, not checked into git — `npm install` regenerates them automatically (via the `prepare` script), and `npm publish` regenerates them again just before packing (via `prepublishOnly`). Only the minified `libraries.json` files stay committed, since existing consumers that use this repo as a git submodule read them directly without running a build.
+
+A pre-commit hook (via husky) runs the Python minification step automatically and stages the regenerated `libraries.json` / `min/*.py` files.
