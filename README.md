@@ -1,3 +1,5 @@
+> **This repository has moved.** The canonical source is now on ETH's GitLab: [gitlab.inf.ethz.ch/public-dkomm/webtp/robotics_libraries](https://gitlab.inf.ethz.ch/public-dkomm/webtp/robotics_libraries) (also published as [`@tigerpython/robotics-libraries`](https://www.npmjs.com/package/@tigerpython/robotics-libraries) on npm). This GitHub repository is archived and read-only.
+
 TigerJython Robotics Libraries
 
 This repository contains all TigerJython robotics modules, as well as a minification script. The minification is done to minimize memory usage of the libraries. For simple integration into other applications, we also provide a JSON file that contains all the minimized libraries.

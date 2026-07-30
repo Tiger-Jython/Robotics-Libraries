@@ -25,7 +25,7 @@ def clampZ(milimeters=50):clampBuffer=bytearray(9);clampBuffer[0]=85;clampBuffer
 @checkInit
 def clamp(force):clampBuffer=bytearray(9);clampBuffer[0]=85;clampBuffer[1]=0;clampBuffer[2]=9;clampBuffer[3]=0;clampBuffer[4]=113;clampBuffer[7]=0;clampBuffer[8]=170;clampBuffer[5]=force;clampBuffer[6]=~(122+clampBuffer[5])&255;uart.write(clampBuffer);sleep(1000)
 def init_xgo_serial(tx_pin,rx_pin,baudrate=115200):global _g2;uart.init(baudrate=baudrate,tx=tx_pin,rx=rx_pin);init_action();_g2=True
-def init_action():commands_buffer=bytearray(9);commands_buffer[0]=85;commands_buffer[1]=0;commands_buffer[2]=9;commands_buffer[3]=0;commands_buffer[4]=62;commands_buffer[5]=255;commands_buffer[6]=~326&255;commands_buffer[7]=0;commands_buffer[8]=170;uart.write(commands_buffer);sleep(2000)
+def init_action():commands_buffer=bytearray(9);commands_buffer[0]=85;commands_buffer[1]=0;commands_buffer[2]=9;commands_buffer[3]=0;commands_buffer[4]=62;commands_buffer[5]=255;commands_buffer[6]=185;commands_buffer[7]=0;commands_buffer[8]=170;uart.write(commands_buffer);sleep(2000)
 @checkInit
 def action(id):commands_buffer=bytearray(9);commands_buffer[0]=85;commands_buffer[1]=0;commands_buffer[2]=9;commands_buffer[3]=0;commands_buffer[4]=62;commands_buffer[5]=id;commands_buffer[6]=~(71+id)&255;commands_buffer[7]=0;commands_buffer[8]=170;uart.write(commands_buffer);sleep(2000)
 def changeInit(tx,rx):global _g3;global _g4;_g3=tx;_g4=rx;init_xgo_serial(_g3,_g4)
