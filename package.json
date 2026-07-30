@@ -1,8 +1,51 @@
 {
-  "devDependencies": {
-    "husky": "^9.1.7"
+  "name": "@tigerpython/robotics-libraries",
+  "version": "1.4.0",
+  "description": "TigerJython robotics modules (micro:bit, Calliope mini) with minified and raw Python sources, plus a typed JS/TS API for easy integration.",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tiger-Jython/Robotics-Libraries.git"
   },
+  "keywords": [
+    "tigerjython",
+    "tigerpython",
+    "robotics",
+    "microbit",
+    "calliope-mini",
+    "micropython"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./calliope/*": "./calliope/*",
+    "./microbit/*": "./microbit/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "calliope",
+    "microbit",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG"
+  ],
   "scripts": {
-    "prepare": "husky"
+    "build:py": "python3 script.py",
+    "build:ts": "tsup",
+    "build": "npm run build:py && npm run build:ts",
+    "prepare": "husky",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
   }
 }

@@ -102,19 +102,42 @@ def create_json(src_folder):
         break
     # Convert and write JSON object to file
     outpath = os.path.join(src_folder, "libraries.json")
-    with open(outpath, "w") as outfile: 
+    with open(outpath, "w") as outfile:
         json.dump(dict, outfile, indent=4)
     print(f"JSON file containing all libraries created in '{outpath}'.")
 
 
-for item in os.listdir(os.getcwd()):
-    if os.path.isdir(item):        
+def create_raw_json(src_folder):
+    dict = {}
+    for root, _, files in os.walk(src_folder):
+        for file in files:
+            if file.endswith('.py') and file != 'script.py':
+                with open(os.path.join(root, file), 'r') as file:
+                    content = file.read()
+                    name = os.path.splitext(os.path.basename(file.name))[0]
+                    dict[name] = content
+
+        # disable recursive collection
+        break
+    # Convert and write JSON object to file
+    outpath = os.path.join(src_folder, "libraries.raw.json")
+    with open(outpath, "w") as outfile:
+        json.dump(dict, outfile, indent=4)
+    print(f"JSON file containing all raw libraries created in '{outpath}'.")
+
+
+DEVICE_DIRS = ["calliope", "microbit"]
+
+for item in DEVICE_DIRS:
+    if os.path.isdir(item):
         minify_directory(item, os.path.join(item, "min"))
         create_json(item)
+        create_raw_json(item)
 
 if len(sys.argv) > 1 and sys.argv[1]=="stage":
     print("staging minified files")
     subprocess.run(["git", "add", "*/libraries.json"])
+    subprocess.run(["git", "add", "*/libraries.raw.json"])
     subprocess.run(["git", "add", "*/min/*"])
 else:
     print("minified files not staged")

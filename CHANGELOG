@@ -1,5 +1,11 @@
+1.4.0
+- Publish as npm package @tigerpython/robotics-libraries
+    - Add typed JS/TS API (getLibrary, getRawLibrary, listLibraries)
+    - Add raw (unminified) libraries.raw.json alongside libraries.json
+    - Add subpath exports for direct access to raw .py sources
+
 1.3.3
-- Update mbrobot_plusV3 
+- Update mbrobot_plusV3
     - Fix getDistance()
     - Fix getDistanceRow()
     - Fix getDistanceColumn()
